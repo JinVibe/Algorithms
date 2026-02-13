@@ -1,44 +1,33 @@
 import sys
-from collections import deque
+sys.setrecursionlimit(10 ** 6)
+
 input = sys.stdin.readline
 
-t = int(input())
+T = int(input())
 
-dx = [-1, 1, 0, 0]
-dy = [0, 0, -1, 1]
+def dfs(x, y):
+    if x <= -1 or x >= M or y <= -1 or y >= N:
+        return False
+    if matrix[y][x] == 1:
+        matrix[y][x] = 0
+        dfs(x - 1, y)
+        dfs(x, y - 1)
+        dfs(x + 1, y)
+        dfs(x, y + 1)
+        return True
+    return False
 
-def bfs(x, y):
-  queue = deque()
-  queue.append((x,y))
 
-  while queue:
-    x, y = queue.popleft()
-    for i in range(4):
-      nx = x + dx[i]
-      ny = y + dy[i]
+for _ in range(T):
+    M, N, K = map(int, input().split())
+    matrix = [[0] * M for _ in range(N)]
+    for _ in range(K):
+        x, y = map(int, input().split())
+        matrix[y][x] = 1
+    cnt = 0
+    for i in range(M):
+        for j in range(N):
+            if dfs(i, j):
+                cnt += 1
 
-      if nx < 0 or ny < 0 or nx >=n or ny >= m:
-        continue
-
-      if matrix[nx][ny] == 1:
-        queue.append((nx,ny))
-        matrix[nx][ny] = 0
-
-  return
-
-for _ in range(t):
-  m, n, k = map(int, sys.stdin.readline().split())
-  matrix = [[0]*m for _ in range(n)]
-
-  for i in range(k):
-    x, y = map(int, sys.stdin.readline().split())
-    matrix[y][x] = 1
-
-  cnt = 0
-  for i in range(n):
-    for j in range(m):
-      if matrix[i][j] ==1:
-        bfs(i, j)
-        cnt +=1
-
-  print(cnt)
+    print(cnt)
