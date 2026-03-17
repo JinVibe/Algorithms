@@ -5,6 +5,7 @@ def solution(queue1, queue2):
     queue1 = deque(queue1)
     queue2 = deque(queue2)
     
+    # 최악의 경우의 수 (머리 속에서 계산은 정확히 안 되지만 이건 안 넘겠지..?)
     total = (len(queue1) + len(queue2)) * 2
     
     # sum 연산이 시간을 많이 잡아먹음
